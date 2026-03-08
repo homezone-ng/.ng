@@ -1,0 +1,447 @@
+ <!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House Rental Platform</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Source+Sans+3:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    .font-display { font-family: 'Playfair Display', Georgia, serif; }
+    .font-body { font-family: 'Source Sans 3', system-ui, sans-serif; }
+    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+    .gradient-overlay { background: linear-gradient(135deg, rgba(30,58,95,0.9) 0%, rgba(60,90,130,0.85) 100%); }
+    .btn-primary { transition: all 0.2s ease; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(212,175,55,0.4); }
+    .modal-backdrop { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+    .input-focus:focus { box-shadow: 0 0 0 3px rgba(212,175,55,0.3); }
+    .toast { animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards; }
+    @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+    .animate-fade-in { animation: fadeIn 0.6s ease forwards; }
+    .animate-slide-up { animation: slideUp 0.5s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; }
+    .stagger-4 { animation-delay: 0.4s; }
+    .stagger-5 { animation-delay: 0.5s; }
+    .stagger-6 { animation-delay: 0.6s; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full font-body bg-stone-50 text-slate-800 overflow-auto">
+  <div id="app-wrapper" class="w-full min-h-full"><!-- Navigation -->
+   <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center h-16">
+      <div class="flex items-center gap-2"><img src="https://i.ibb.co/ksb9Sgsf/Brown-and-Beige-Minimalist-Luxury-Fashion-Typographic-Logo-. -0000.jpg" alt="HomeZone Logo" class="w-8 h-8 object-contain" loading="lazy"> <span id="nav-title" class="font-display text-xl font-semibold text-slate-800">HomeZone</span>
+      </div>
+      <div class="hidden md:flex items-center gap-8"><a href="#listings" class="text-slate-600 hover:text-amber-600 transition-colors font-medium">Listings</a> <a href="#about" class="text-slate-600 hover:text-amber-600 transition-colors font-medium">About</a> <a href="https://wa.link/mc4ii1" target="_blank" rel="noopener noreferrer" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-medium transition-colors flex items-center gap-2">
+        <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-1.105 0-2.194.211-3.236.623l-.232.113-.241-.04C7.194 6.238 6.297 5.898 5.43 5.898c-2.424 0-4.397 1.973-4.397 4.397 0 1.036.278 2.053.804 2.93l.129.242-.081.262c-.553 1.782-.381 3.644.777 5.265 1.621 2.362 4.536 3.592 7.754 3.592h.006c3.182 0 6.124-1.233 7.733-3.606 1.154-1.619 1.327-3.479.773-5.265l-.084-.262.131-.242c.527-.876.805-1.894.805-2.93 0-2.424-1.973-4.397-4.397-4.397" />
+        </svg> Chat Admin </a> <button id="nav-cta" class="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2 rounded-full font-medium btn-primary">Browse Homes</button>
+      </div>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <header class="relative pt-16 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
+    <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+     <div class="text-center animate-fade-in">
+      <h1 id="hero-title" class="font-display text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">Find Your Perfect<br><span class="text-amber-400">Home</span></h1>
+      <p id="hero-tagline" class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10">Discover exceptional rental properties in prime locations. Schedule viewings and make your dream home a reality.</p>
+      <div class="flex flex-col items-center gap-4">
+       <a href="#listings" id="hero-cta" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-full font-semibold text-lg btn-primary"> <span>Explore Listings</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg></a> <a href="https://wa.link/mc4ii1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
+        <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-1.105 0-2.194.211-3.236.623l-.232.113-.241-.04C7.194 6.238 6.297 5.898 5.43 5.898c-2.424 0-4.397 1.973-4.397 4.397 0 1.036.278 2.053.804 2.93l.129.242-.081.262c-.553 1.782-.381 3.644.777 5.265 1.621 2.362 4.536 3.592 7.754 3.592h.006c3.182 0 6.124-1.233 7.733-3.606 1.154-1.619 1.327-3.479.773-5.265l-.084-.262.131-.242c.527-.876.805-1.894.805-2.93 0-2.424-1.973-4.397-4.397-4.397" />
+        </svg><span>Chat on WhatsApp</span> </a>
+      </div>
+     </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-stone-50 to-transparent"></div>
+   </header><!-- Listings Section -->
+   <section id="listings" class="py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 animate-slide-up">
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-slate-800 mb-4">Available Properties</h2>
+      <p class="text-slate-600 max-w-xl mx-auto">Handpicked homes ready for you to move in. Each property has been verified for quality and comfort.</p>
+     </div>
+     <div id="house-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Houses will be rendered here -->
+     </div>
+    </div>
+   </section><!-- About Section -->
+   <section id="about" class="py-16 bg-slate-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="grid md:grid-cols-3 gap-8 text-center">
+      <div class="p-6 animate-slide-up stagger-1" style="opacity: 0;">
+       <div class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-2">Verified Listings</h3>
+       <p class="text-slate-400">Every property is thoroughly inspected and verified for your peace of mind.</p>
+      </div>
+      <div class="p-6 animate-slide-up stagger-2" style="opacity: 0;">
+       <div class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-2">Easy Scheduling</h3>
+       <p class="text-slate-400">Book property viewings at your convenience with our simple booking system.</p>
+      </div>
+      <div class="p-6 animate-slide-up stagger-3" style="opacity: 0;">
+       <div class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-2">Direct Communication</h3>
+       <p class="text-slate-400">Connect directly with property managers for quick responses to your inquiries.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="bg-slate-900 text-slate-400 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+     <div class="flex items-center justify-center gap-2 mb-4"><img src="https://i.ibb.co/ksb9Sgsf/Brown-and-Beige-Minimalist-Luxury-Fashion-Typographic-Logo-. -0000.jpg" alt="HomeZone Logo" class="w-6 h-6 object-contain" loading="lazy"> <span id="footer-title" class="font-display text-lg text-white">HomeZone</span>
+     </div>
+     <p class="text-sm">© 2026 HomeZone. All rights reserved. Developed by I.TEC GLOBAL.</p>
+    </div>
+   </footer><!-- Inspection Request Modal -->
+   <div id="inspection-modal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-backdrop absolute inset-0" onclick="closeModal()"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg pointer-events-auto transform transition-all max-h-[90%] overflow-y-auto">
+      <div class="p-6 border-b border-slate-100">
+       <div class="flex justify-between items-center">
+        <h3 class="font-display text-2xl font-bold text-slate-800">Request Inspection</h3><button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+         </svg></button>
+       </div>
+       <p id="modal-property-name" class="text-slate-600 mt-1">Property Name</p>
+      </div>
+      <form id="inspection-form" class="p-6 space-y-5"><input type="hidden" id="selected-house-id" value="">
+       <div><label for="client-name" class="block text-sm font-medium text-slate-700 mb-1">Full Name *</label> <input type="text" id="client-name" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none input-focus transition-shadow" placeholder="Enter your full name">
+       </div>
+       <div><label for="client-email" class="block text-sm font-medium text-slate-700 mb-1">Email Address *</label> <input type="email" id="client-email" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none input-focus transition-shadow" placeholder="your@email.com">
+       </div>
+       <div><label for="client-phone" class="block text-sm font-medium text-slate-700 mb-1">Phone Number *</label> <input type="tel" id="client-phone" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none input-focus transition-shadow" placeholder="+1 (555) 000-0000">
+       </div>
+       <div><label for="preferred-date" class="block text-sm font-medium text-slate-700 mb-1">Preferred Inspection Date *</label> <input type="date" id="preferred-date" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none input-focus transition-shadow">
+       </div>
+       <div><label for="client-message" class="block text-sm font-medium text-slate-700 mb-1">Message (Optional)</label> <textarea id="client-message" rows="3" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none input-focus transition-shadow resize-none" placeholder="Any specific questions or requirements..."></textarea>
+       </div><button type="submit" id="submit-btn" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-4 rounded-xl font-semibold btn-primary flex items-center justify-center gap-2"> <span>Submit Request</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg></button>
+      </form>
+     </div>
+    </div>
+   </div><!-- Toast Notification -->
+   <div id="toast-container" class="fixed top-20 right-4 z-50 space-y-2"></div>
+  </div>
+  <script>
+    // Reference house data (static - Paradigm A)
+    const randomImages = [
+      'https://i.ibb.co/ksj8k2cw/370b6425262d45e38919aa91efd7e43a.jpg',
+      'https://i.ibb.co/gb0pxYbN/2a170f66ce74d7cc3c1b5f3adf5302bd.jpg',
+      'https://i.ibb.co/zV64PJvc/48468bf4e174ca3442ff4000e18c2bac.jpg'
+    ];
+    
+    const houses = [
+      {
+        id: 'house-1',
+        name: 'Modern Hostel Apartment',
+        location: 'Central location',
+        price: '₦400,000',
+        beds: 2,
+        baths: 1,
+        image: 'https://i.ibb.co/B5sbnBDS/fe2dc5905d8f2ed1f0bf1004e2fdbfc6.jpg',
+        features: ['Gated', 'Campus proximity', 'Furnished']
+      },
+      {
+        id: 'house-2',
+        name: 'Cozy Single Room',
+        location: 'Central location',
+        price: '₦800,000',
+        beds: 1,
+        baths: 1,
+        image: 'https://i.ibb.co/NdYmmsVt/88fe5cd7baf6c5a721d239083867b882.jpg',
+        features: ['Gated', '10 apartments', 'Parking space']
+      },
+      {
+        id: 'house-3',
+        name: 'Luxury Serviced Apartment',
+        location: 'Yaba location',
+        price: '₦300,000',
+        beds: 1,
+        baths: 1,
+        image: randomImages[Math.floor(Math.random() * randomImages.length)],
+        features: ['Gated', 'Security', 'Yaba location']
+      }
+    ];
+  
+
+    // Default configuration
+    const defaultConfig = {
+      platform_title: 'HomeZone',
+      hero_tagline: 'Discover exceptional rental properties in prime locations. Schedule viewings and make your dream home a reality.',
+      cta_button_text: 'Explore Listings',
+      primary_color: '#f59e0b',
+      secondary_color: '#1e293b',
+      text_color: '#1e293b',
+      background_color: '#fafaf9',
+      accent_color: '#ffffff',
+      font_family: 'Playfair Display',
+      font_size: 16
+    };
+
+    let inspectionRequests = [];
+    let currentRecordCount = 0;
+
+    // Data Handler for inspection requests
+    const dataHandler = {
+      onDataChanged(data) {
+        inspectionRequests = data;
+        currentRecordCount = data.length;
+      }
+    };
+
+    // Render houses
+    function renderHouses() {
+      const grid = document.getElementById('house-grid');
+      grid.innerHTML = houses.map((house, index) => `
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover animate-slide-up stagger-${index + 1}" style="opacity: 0;">
+          <div class="h-48 relative bg-slate-300 overflow-hidden">
+            <img src="${house.image}" alt="${house.name}" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%)'; this.style.display='none';">
+            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+              <span class="font-semibold text-slate-800">${house.price}</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-semibold text-slate-800 mb-1">${house.name}</h3>
+            <p class="text-slate-500 flex items-center gap-1 mb-4">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              ${house.location}
+            </p>
+            <div class="flex items-center gap-4 text-sm text-slate-600 mb-4">
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                ${house.beds} Bed${house.beds !== 1 ? 's' : ''}
+              </span>
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
+                </svg>
+                ${house.baths} Bath${house.baths !== 1 ? 's' : ''}
+              </span>
+            </div>
+            <div class="flex flex-wrap gap-2 mb-4">
+              ${house.features.map(f => `<span class="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full">${f}</span>`).join('')}
+            </div>
+            <button onclick="openInspectionModal('${house.id}', '${house.name}')"
+              class="w-full bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-xl font-medium transition-colors flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Schedule Inspection
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Modal functions
+    function openInspectionModal(houseId, houseName) {
+      document.getElementById('selected-house-id').value = houseId;
+      document.getElementById('modal-property-name').textContent = houseName;
+      document.getElementById('inspection-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      
+      // Set minimum date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('preferred-date').min = today;
+    }
+
+    function closeModal() {
+      document.getElementById('inspection-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+      document.getElementById('inspection-form').reset();
+    }
+
+    // Toast notification
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-emerald-500' : type === 'error' ? 'bg-red-500' : 'bg-amber-500';
+      toast.className = `toast ${bgColor} text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3`;
+      toast.innerHTML = `
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          ${type === 'success' 
+            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>'
+            : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'}
+        </svg>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    // Form submission
+    document.getElementById('inspection-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('submit-btn');
+      const originalContent = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Submitting...</span>
+      `;
+
+      const houseId = document.getElementById('selected-house-id').value;
+      const houseName = document.getElementById('modal-property-name').textContent;
+      const clientName = document.getElementById('client-name').value;
+      const clientEmail = document.getElementById('client-email').value;
+      const clientPhone = document.getElementById('client-phone').value;
+      const preferredDate = document.getElementById('preferred-date').value;
+      const clientMessage = document.getElementById('client-message').value || '';
+
+      // Format message for WhatsApp
+      const whatsappMessage = `*Inspection Request*%0A%0AProperty: ${encodeURIComponent(houseName)}%0AName: ${encodeURIComponent(clientName)}%0AEmail: ${encodeURIComponent(clientEmail)}%0APhone: ${encodeURIComponent(clientPhone)}%0APreferred Date: ${encodeURIComponent(preferredDate)}%0A${clientMessage ? `Message: ${encodeURIComponent(clientMessage)}` : ''}`;
+
+      // Open WhatsApp with pre-filled message
+      const whatsappLink = `https://wa.link/4ieain?text=${whatsappMessage}`;
+      window.open(whatsappLink, '_blank');
+
+      showToast('Opening WhatsApp to send your inspection request...');
+      closeModal();
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalContent;
+    });
+
+    // Config change handler
+    async function onConfigChange(config) {
+      const c = { ...defaultConfig, ...config };
+      
+      // Update titles
+      document.getElementById('nav-title').textContent = c.platform_title;
+      document.getElementById('footer-title').textContent = c.platform_title;
+      
+      // Update hero
+      document.getElementById('hero-tagline').textContent = c.hero_tagline;
+      document.getElementById('hero-cta').querySelector('span').textContent = c.cta_button_text;
+      document.getElementById('nav-cta').textContent = c.cta_button_text;
+      
+      // Update colors
+      document.documentElement.style.setProperty('--primary', c.primary_color);
+      
+      // Apply primary color to buttons
+      const primaryBtns = document.querySelectorAll('.btn-primary, #submit-btn');
+      primaryBtns.forEach(btn => {
+        if (!btn.disabled) {
+          btn.style.backgroundColor = c.primary_color;
+        }
+      });
+      
+      // Update nav icon and accent elements
+      const accentElements = document.querySelectorAll('.text-amber-400, .text-amber-500');
+      accentElements.forEach(el => el.style.color = c.primary_color);
+      
+      // Update font
+      const fontFamily = `${c.font_family}, Georgia, serif`;
+      document.querySelectorAll('.font-display').forEach(el => {
+        el.style.fontFamily = fontFamily;
+      });
+      
+      // Update font size
+      const baseSize = c.font_size;
+      document.getElementById('hero-title').style.fontSize = `${baseSize * 3}px`;
+      document.getElementById('hero-tagline').style.fontSize = `${baseSize * 1.25}px`;
+    }
+
+    // Initialize
+    async function init() {
+      renderHouses();
+      
+      // Initialize Data SDK
+      if (window.dataSdk) {
+        const dataResult = await window.dataSdk.init(dataHandler);
+        if (!dataResult.isOk) {
+          console.error('Failed to initialize data SDK');
+        }
+      }
+      
+      // Initialize Element SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities: (config) => {
+            const c = { ...defaultConfig, ...config };
+            return {
+              recolorables: [
+                {
+                  get: () => c.background_color,
+                  set: (v) => { c.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+                },
+                {
+                  get: () => c.accent_color,
+                  set: (v) => { c.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }
+                },
+                {
+                  get: () => c.text_color,
+                  set: (v) => { c.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+                },
+                {
+                  get: () => c.primary_color,
+                  set: (v) => { c.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }
+                },
+                {
+                  get: () => c.secondary_color,
+                  set: (v) => { c.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); }
+                }
+              ],
+              borderables: [],
+              fontEditable: {
+                get: () => c.font_family,
+                set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+              },
+              fontSizeable: {
+                get: () => c.font_size,
+                set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+              }
+            };
+          },
+          mapToEditPanelValues: (config) => {
+            const c = { ...defaultConfig, ...config };
+            return new Map([
+              ['platform_title', c.platform_title],
+              ['hero_tagline', c.hero_tagline],
+              ['cta_button_text', c.cta_button_text]
+            ]);
+          }
+        });
+      }
+      
+      // Trigger initial render
+      onConfigChange(defaultConfig);
+    }
+
+    init();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d7d07be90e393eb',t:'MTc3Mjc1NDcwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
